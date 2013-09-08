@@ -1,7 +1,14 @@
-# Maximum Awesome (Experimental) Linux Port
+# Maximum Awesome inux Port
 
-** Still very experimental **
-Linux (actually just Ubuntu) port of Maximum Awesome from (https://github.com/square/maximum-awesome).
+* Still somewhat experimental, so use with caution.
+Linux (currently just Ubuntu) port of Maximum Awesome from (https://github.com/square/maximum-awesome).
+
+## What do you need to do it
+Ubuntu, with `git` and `rake` installed. To get them you could do
+
+```bash
+sudo apt-get install git rake
+```
 
 ## What's in it?
 
