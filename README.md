@@ -1,4 +1,4 @@
-# Maximum Awesome inux Port
+# Maximum Awesome Linux Port
 
 * Still somewhat experimental, so use with caution.
 Linux (currently just Ubuntu) port of Maximum Awesome from (https://github.com/square/maximum-awesome).
