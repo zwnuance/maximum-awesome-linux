@@ -85,13 +85,6 @@ def link_file(original_filename, symlink_filename)
 end
 
 namespace :install do
-  desc 'Install Vundle'
-  task :vundle do
-    step 'vundle'
-    install_github_bundle 'gmarik','vundle'
-    sh 'vim -c "BundleInstall" -c "q" -c "q"'
-  end
-
   namespace :osx do
     desc 'Update or Install Brew'
     task :brew do
@@ -101,29 +94,23 @@ namespace :install do
       end
     end
 
-    desc 'Install iTerm'
-    task :iterm do
-      step 'iterm2'
-      unless app? 'iTerm'
-        system <<-SHELL
-        curl -L -o iterm.zip http://iterm2.googlecode.com/files/iTerm2-1_0_0_20120203.zip && \
-          unzip iterm.zip && \
-          mv iTerm.app /Applications && \
-          rm iterm.zip
-        SHELL
-      end
-    end
-
     desc 'Install The Silver Searcher'
     task :the_silver_searcher do
       step 'the_silver_searcher'
       brew_install 'the_silver_searcher'
     end
 
-    desc 'Install tmux'
-    task :tmux do
-      step 'tmux'
-      brew_install 'tmux'
+    desc 'Install iTerm'
+    task :iterm do
+      step 'iterm2'
+      unless app? 'iTerm'
+        system <<-SHELL
+          curl -L -o iterm.zip http://iterm2.googlecode.com/files/iTerm2-1_0_0_20120203.zip && \
+            unzip iterm.zip && \
+            mv iTerm.app /Applications && \
+            rm iterm.zip
+        SHELL
+      end
     end
 
     desc 'Install ctags'
@@ -138,15 +125,21 @@ namespace :install do
       brew_install 'reattach-to-user-namespace'
     end
 
+    desc 'Install tmux'
+    task :tmux do
+      step 'tmux'
+      brew_install 'tmux'
+    end
+
     desc 'Install MacVim'
     task :macvim do
       step 'MacVim'
       unless app? 'MacVim'
         system <<-SHELL
-        curl -L -o macvim.tbz https://github.com/downloads/b4winckler/macvim/MacVim-snapshot-64.tbz && \
-          bunzip2 macvim.tbz && tar xf macvim.tar && \
-          mv MacVim-snapshot-64/MacVim.app /Applications && \
-          rm -rf macvim.tbz macvim.tar MacVim-snapshot-64
+          curl -L -o macvim.tbz https://github.com/downloads/b4winckler/macvim/MacVim-snapshot-64.tbz && \
+            bunzip2 macvim.tbz && tar xf macvim.tar && \
+            mv MacVim-snapshot-64/MacVim.app /Applications && \
+            rm -rf macvim.tbz macvim.tar MacVim-snapshot-64
         SHELL
         system ''
       end
@@ -216,6 +209,13 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
         sh 'eval `dircolors .dircolors`'
       end
     end
+  end
+
+  desc 'Install Vundle'
+  task :vundle do
+    step 'vundle'
+    install_github_bundle 'gmarik','vundle'
+    sh 'vim -c "BundleInstall" -c "q" -c "q"'
   end
 end
 
