@@ -1,4 +1,5 @@
 require 'tmpdir'
+require 'shellwords'
 
 def brew_install(package, *options)
   `brew list #{package}`
@@ -8,7 +9,8 @@ def brew_install(package, *options)
 end
 
 def apt_install(package)
-  sh "sudo apt-get install #{package}"
+  #sh "sudo apt-get install #{package}"
+  puts "#{package} should be installed."
 end
 
 def linux?
@@ -21,6 +23,18 @@ end
 
 def osx?
   /darwin/ =~ RUBY_PLATFORM
+end
+
+def add_to_bashrc(str)
+  user = `echo $USER`.strip
+  bashrc = "/u/#{user}/.bashrc"
+  if File.exist?(bashrc)
+    unless File.read(bashrc).include?(str)
+      sh "echo #{Shellwords.escape(str)} >> #{bashrc}"
+    end
+  else
+    sh "echo #{Shellwords.escape(str)} >> #{bashrc}"
+  end
 end
 
 def install_github_bundle(user, package)
@@ -185,10 +199,13 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
     # https://github.com/ggreer/the_silver_searcher
     task :the_silver_searcher do
       step 'the_silver_searcher'
-      sh 'sudo apt-get install build-essential automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev'
+      pwd = `cd . && pwd`.strip # the cd . is needed to clean up the pathname
+      #sh 'sudo apt-get install build-essential automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev'
+      Dir.mkdir('bin') unless File.exist?('bin')
       Dir.mktmpdir do |dir|
-        sh "cd #{dir} && git clone https://github.com/ggreer/the_silver_searcher.git && cd the_silver_searcher && ./build.sh && sudo make install"
+        sh "cd #{dir} && git clone https://github.com/ggreer/the_silver_searcher.git && cd the_silver_searcher && ./build.sh && cp ag #{pwd}/bin/"
       end
+      add_to_bashrc "PATH=$PATH:#{pwd}/bin"
     end
 
     # instructions from http://www.webupd8.org/2011/04/solarized-must-have-color-paletter-for.html
@@ -206,7 +223,7 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
       Dir.chdir do
         sh "wget --no-check-certificate https://raw.github.com/seebi/dircolors-solarized/master/dircolors.ansi-#{color}"
         sh "mv dircolors.ansi-#{color} .dircolors"
-        sh 'eval `dircolors .dircolors`'
+        add_to_bashrc "eval `dircolors .dircolors`"
       end
     end
   end
@@ -222,7 +239,7 @@ end
 desc 'Install these config files.'
 task :default do
   if ubuntu?
-    Rake::Task['install:ubuntu:update'].invoke
+    #Rake::Task['install:ubuntu:update'].invoke
     Rake::Task['install:ubuntu:vim'].invoke
     Rake::Task['install:ubuntu:tmux'].invoke
     Rake::Task['install:ubuntu:ctags'].invoke
