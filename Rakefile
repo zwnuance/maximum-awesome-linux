@@ -223,7 +223,7 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
       Dir.chdir do
         sh "wget --no-check-certificate https://raw.github.com/seebi/dircolors-solarized/master/dircolors.ansi-#{color}"
         sh "mv dircolors.ansi-#{color} .dircolors"
-        add_to_bashrc "eval `dircolors .dircolors`"
+        add_to_bashrc "eval `dircolors ~/.dircolors`"
       end
     end
   end
