@@ -11,3 +11,5 @@ if (&t_Co == 256 || has('gui_running'))
     colorscheme desert
   endif
 endif
+
+set mouse=v
