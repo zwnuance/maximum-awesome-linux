@@ -55,26 +55,26 @@ namespace :install do
   desc 'Install Vim'
   task :vim do
     step 'vim'
-    sh 'sudo apt-get install vim'
+    sh 'sudo apt-get install -y vim'
   end
 
   desc 'Install tmux'
   task :tmux do
     step 'tmux'
-    sh 'sudo apt-get install tmux'
+    sh 'sudo apt-get install -y tmux'
   end
 
   desc 'Install ctags'
   task :ctags do
     step 'ctags'
-    sh 'sudo apt-get install ctags'
+    sh 'sudo apt-get install -y ctags'
   end
 
   # https://github.com/ggreer/the_silver_searcher
   desc 'Install The Silver Searcher'
   task :the_silver_searcher do
     step 'the_silver_searcher'
-    sh 'sudo apt-get install build-essential automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev'
+    sh 'sudo apt-get install -y build-essential automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev'
     sh 'git clone https://github.com/ggreer/the_silver_searcher.git'
     Dir.chdir 'the_silver_searcher' do
       sh './build.sh'
